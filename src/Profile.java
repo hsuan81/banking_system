@@ -16,6 +16,24 @@ public class Profile {
         this.emailAddress = emailAddress;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void viewProfile() {
+        System.out.println("Current phone number: " + getPhoneNumber());
+        System.out.println("Current address: " + getAddress());
+        System.out.println("Current email address: " + getEmailAddress());
+    }
+
     public void editPhoneNumber(String number){
         // System.out.print("Current phone number: " + this.phoneNumber);
         // System.out.print("New phone number:");

@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
-// import com.google.gson.stream.JsonReader;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.io.*;
 
 public class ReadWriteToFile<T> {
@@ -22,11 +23,12 @@ public class ReadWriteToFile<T> {
 
     public DataPool<T> read() {
         DataPool<T> dataPool;
+        Type dataType = new TypeToken<DataPool<T>>(){}.getType();
          
         try (Reader reader = new FileReader(fileLocation)) {
 
             // Convert JSON File to Java Object
-            dataPool = gson.fromJson(reader, DataPool.class);
+            dataPool = gson.fromJson(reader, dataType);
 			
 			// print staff object
             System.out.println(dataPool);

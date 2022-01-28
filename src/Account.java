@@ -34,6 +34,10 @@ public class Account {
 		return pinNumber;
 	}
 
+	public String getCustomerName() {
+		return customerName;
+	}
+
 	public double getBalance() {
 		return balance;
 	}

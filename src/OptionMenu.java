@@ -1,5 +1,5 @@
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+// import java.text.DecimalFormatSymbols;
 import java.util.*;
 import java.io.IOException;
 
@@ -33,7 +33,13 @@ public class OptionMenu extends Account {
 
 		switch (selection) {
 			case 1:
-				getLogin();
+				try {
+					getLogin();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Something wrong!");
+					e.printStackTrace();
+				}
 				break;
 	
 			case 2:
@@ -116,7 +122,7 @@ public class OptionMenu extends Account {
 	public void getMenu() {
 		System.out.println("Select the Account you Want to Access: ");
 		System.out.println(" Type 1 - Transaction");
-		System.out.println(" Type 2 - Profile");
+		System.out.println(" Type 2 - Profile and Balance");
 		System.out.println(" Type 3 - Exit");
 
 		int selection = menuInput.nextInt();
@@ -178,10 +184,10 @@ public class OptionMenu extends Account {
 }
 
     public void getProfile() {
-        System.out.println("Profile: ");
+        System.out.println("Profile and Balance: ");
         System.out.println(" Type 1 - View Balance");
-        System.out.println(" Type 2 - Withdraw Funds");
-        System.out.println(" Type 3 - Deposit Funds");
+        System.out.println(" Type 2 - View Profile");
+        System.out.println(" Type 3 - Edit Profile");
         System.out.println(" Type 4 - Exit");
         System.out.print("Choice: ");
 
@@ -189,18 +195,18 @@ public class OptionMenu extends Account {
 
         switch (selection) {
         case 1:
-            System.out.println("Saving Account Balance: " + moneyFormat.format(getSavingBalance()));
-            getAccountType();
+            System.out.println("Account Balance: " + moneyFormat.format(account.getBalance()));
+            getMenu();
             break;
 
         case 2:
-            getsavingWithdrawInput();
-            getAccountType();
+            profile.viewProfile();
+            getMenu();
             break;
 
         case 3:
-            getSavingDepositInput();
-            getAccountType();
+            getProfileOption();
+            getMenu();
             break;
 
         case 4:
@@ -209,7 +215,57 @@ public class OptionMenu extends Account {
 
         default:
             System.out.println("\n" + "Invalid Choice." + "\n");
-            getChecking();
+            getProfile();
+        }
+    }
+
+	public void getProfileOption() {
+        System.out.println("Edit Profile: ");
+        System.out.println(" Type 1 - Phone Number");
+        System.out.println(" Type 2 - Address");
+        System.out.println(" Type 3 - Email address");
+		System.out.println(" Type 4 - Back");
+        System.out.println(" Type 5 - Exit");
+        System.out.print("Choice: ");
+
+        int selection = menuInput.nextInt();
+
+        switch (selection) {
+        case 1:
+		    System.out.print("Current phone number: " + profile.getPhoneNumber());
+			System.out.print("New phone number:");
+			String number = menuInput.nextLine();
+			profile.editPhoneNumber(number);
+            getMenu();
+            break;
+
+        case 2:
+			System.out.print("Current address: " + profile.getAddress());
+			System.out.print("New address:");
+			String address = menuInput.nextLine();
+			profile.editAddress(address);
+            getMenu();
+            break;
+
+        case 3:
+			System.out.print("Current email address: " + profile.getEmailAddress());
+			System.out.print("New email address:");
+			String emailAddress = menuInput.nextLine();
+			profile.editEmailAddress(emailAddress);
+			getMenu();
+            break;
+
+        case 4:
+            getProfile();
+            break;
+
+		case 5:
+            System.out.println("Thank You for using this ATM, bye.");
+            break;
+
+        default:
+            System.out.println("\n" + "Invalid Choice." + "\n");
+            getProfileOption();
         }
     }
 
