@@ -11,18 +11,18 @@ public class ReadWriteToFile<T> {
         fileLocation = location;
     }
 
-    public void write(T data) {
+    public void write(DataPool<T> dataPool) {
         // File file = new File(fileLocation);
 
         try (FileWriter writer = new FileWriter(fileLocation)) {
-            gson.toJson(data, writer);
+            gson.toJson(dataPool, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public DataPool<T> read() {
-        DataPool<T> dataPool;
+        DataPool<T> dataPool = null;
         Type dataType = new TypeToken<DataPool<T>>(){}.getType();
          
         try (Reader reader = new FileReader(fileLocation)) {
@@ -36,7 +36,6 @@ public class ReadWriteToFile<T> {
 
         } catch (IOException e) {
             e.printStackTrace();
-            dataPool = null;
         }
         return dataPool;
     }

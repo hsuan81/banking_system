@@ -17,6 +17,9 @@ public class DataPool<T> {
     }
 
     public boolean check(int customerNumber) {
+        if (pool.isEmpty()) {
+            return false;
+        }
         return pool.containsKey(customerNumber); 
     }
 }

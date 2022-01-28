@@ -1,0 +1,1 @@
+{"pool":{"0":{"customerNumber":0,"pinNumber":12345678,"customerName":"user1","balance":220.0}}}

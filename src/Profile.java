@@ -39,20 +39,20 @@ public class Profile {
         // System.out.print("New phone number:");
         setPhoneNumber(number);
         System.out.println("Phone number is modified.");
-        System.out.print("Current phone number: " + this.phoneNumber);
+        System.out.println("Current phone number: " + getPhoneNumber());
     }
 
     public void editAddress(String address){
         // System.out.print("Current address: " + this.address);
         setAddress(address);
         System.out.println("Address is modified.");
-        System.out.print("Current address: " + this.address);
+        System.out.println("Current address: " + getAddress());
     }
 
     public void editEmailAddress(String emailAddress){
         // System.out.print("Current email address: " + this.emailAddress);
         setEmailAddress(emailAddress);
         System.out.println("Email is modified.");
-        System.out.print("Current email address: " + this.emailAddress);
+        System.out.println("Current email address: " + getEmailAddress());
     }
 }

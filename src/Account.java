@@ -1,5 +1,5 @@
-import java.text.DecimalFormat;
-import java.util.*;
+// import java.text.DecimalFormat;
+// import java.util.*;
 
 public class Account {
 
@@ -7,10 +7,6 @@ public class Account {
 	private int pinNumber;
     private String customerName;
 	protected double balance = 0;
-
-	Scanner input = new Scanner(System.in);
-	DecimalFormat moneyFormat = new DecimalFormat("'$'###,##0.00");
-    // Transaction accountTrans = new Transaction();
 
 	public int setCustomerNumber(int customerNumber) {
 		this.customerNumber = customerNumber;
@@ -42,21 +38,21 @@ public class Account {
 		return balance;
 	}
 
-    private double deposit(double amount) {
-        return this.balance += amount;
+    public double deposit(double amount) {
+        return balance += amount;
         // return balance;
     }
 
-    private double withdraw(double amount) {
-        return this.balance -= amount;
+    public double withdraw(double amount) {
+        return balance -= amount;
         // return balance;
     }
 
-    private boolean checkWithdraw(double amount) {
+    public boolean checkWithdraw(double amount) {
         return (amount <= this.balance);
     }
 
-    private boolean checkInput(double amount) {
+    public boolean checkInput(double amount) {
         if (amount >= 0) {
             return true;
         }
@@ -65,71 +61,70 @@ public class Account {
         }
     }
 
-	public void calcWithdraw() {
-        System.out.println("Account Balance: " + moneyFormat.format(balance));
-		System.out.print("Amount you want to withdraw from Account: ");
-		double amount = input.nextDouble();
-        while (!checkInput(amount)) {
-            System.out.println("Input is valid, please type valid amount.");
-            System.out.print("Amount you want to withdraw from Account: ");
-            amount = input.nextDouble();
-        }
+	// public void calcWithdraw(double amount) {
+    //     // System.out.println("Account Balance: " + moneyFormat.format(balance));
+	// 	// System.out.print("Amount you want to withdraw from Account: ");
+	// 	// double amount = input.nextDouble();
+    //     // while (!checkInput(amount)) {
+    //     //     System.out.println("Input is valid, please type valid amount.");
+    //     //     System.out.print("Amount you want to withdraw from Account: ");
+    //     //     amount = input.nextDouble();
+    //     // }
 
-        if (checkWithdraw(amount)) {
-            withdraw(amount);
-            System.out.println("Withdraw succeeded.");
-        }
-        else {
-            System.out.println("Not enough balance.");
-        }
-	}
+    //     if (checkWithdraw(amount)) {
+    //         withdraw(amount);
+    //         System.out.println("Withdraw succeeded.");
+    //     }
+    //     else {
+    //         System.out.println("Not enough balance.");
+    //     }
+	// }
 
-	public void calcDeposit() {
-        System.out.println("Account Balance: " + moneyFormat.format(balance));
-		System.out.print("Amount you want to deposit to Account: ");
-		double amount = input.nextDouble();
+	// public void calcDeposit(double amount) {
+    //     // System.out.println("Account Balance: " + moneyFormat.format(balance));
+	// 	// System.out.print("Amount you want to deposit to Account: ");
+	// 	// double amount = input.nextDouble();
 
-        while (!checkInput(amount)) {
-            System.out.println("Input is valid, please type valid amount.");
-            System.out.print("Amount you want to withdraw from Account: ");
-            amount = input.nextDouble();
-        }
+    //     // while (!checkInput(amount)) {
+    //     //     System.out.println("Input is valid, please type valid amount.");
+    //     //     System.out.print("Amount you want to withdraw from Account: ");
+    //     //     amount = input.nextDouble();
+    //     // }
 
-		deposit(amount);
-        System.out.println("Deposit succeeded.");
-	}
+	// 	deposit(amount);
+    //     System.out.println("Deposit succeeded.");
+	// }
 
-    public void calcTransfer(DataPool<Account> pool) {
-        System.out.println("Account Balance: " + moneyFormat.format(balance));
-		System.out.print("Amount you want to transfer from Account: ");
-		double amount = input.nextDouble();
+    // public void calcTransfer(DataPool<Account> pool) {
+    //     System.out.println("Account Balance: " + moneyFormat.format(balance));
+	// 	System.out.print("Amount you want to transfer from Account: ");
+	// 	double amount = input.nextDouble();
 
-        while (!checkInput(amount)) {
-            System.out.println("Input is valid, please type valid amount.");
-            System.out.print("Amount you want to transfer from Account: ");
-            amount = input.nextDouble();
-        }
+    //     while (!checkInput(amount)) {
+    //         System.out.println("Input is valid, please type valid amount.");
+    //         System.out.print("Amount you want to transfer: ");
+    //         amount = input.nextDouble();
+    //     }
 
-        if (checkWithdraw(amount)) {
-            withdraw(amount);
-        }
-        else {
-            System.out.println("Not enough balance.");
-        }
-        
-        System.out.print("Account number you want to transfer to: ");
-        int toNumber = input.nextInt();
-        // There should be a verification of the account number, but the info might be retrieved from the database
-        // do the deposit to the account
-        if (pool.check(toNumber)) {
-            Account toAccount = pool.get(toNumber);
-            toAccount.deposit(amount);
-        }
-        else {
-            System.out.println("Account number is incorrect.");
-        }
-
-    }
+    //     if (!checkWithdraw(amount)) {
+	// 		System.out.println("Not enough balance.");
+    //     }
+    //     else {
+	// 		System.out.print("Account number you want to transfer to: ");
+	// 		int toNumber = input.nextInt();
+	// 		// There should be a verification of the account number, but the info might be retrieved from the database
+	// 		// do the deposit to the account
+	// 		if (pool.check(toNumber) && toNumber != customerNumber) {
+	// 			Account toAccount = pool.get(toNumber);
+	// 			withdraw(amount);
+	// 			toAccount.deposit(amount);
+	// 			System.out.println("Transfer succeeded.");
+	// 		}
+	// 		else {
+	// 			System.out.println("Account number is incorrect.");
+	// 		}
+	// 	}
+    // }
 
 	// public double calcSavingDeposit(double amount) {
 	// 	savingBalance = (savingBalance + amount);
