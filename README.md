@@ -39,6 +39,14 @@ After `git clone` the project, you need to do extra work to set up the environme
 
 * `ReadWriteToFile.java`: A support class to read clients data from and write to a `json` file as a database
 
+## Data Files
+
+Every time the system is started, these json files are extracted and converted to corresponding data pool. The data pool will be converted and written to the original json files after the user exits the applicaiton.
+
+* `account.txt`: Where stores clients' account number as key and the information in `class Account` as value.
+
+* `profile.txt`: Where stores clients' account number as key and the information in `class Profile` as value.
+
 ## Features
 
 * User can open an account and make deposit, withdraw and transfer money to another existing account.
