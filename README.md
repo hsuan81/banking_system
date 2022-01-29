@@ -11,13 +11,13 @@ A simple banking system created with Java. This simple system features basic fun
 
 ### Installing
 
-**If you are using VScode as your IDE**
+* **If you are using VScode as your IDE**
 
 Simply `git clone` this project either through command line or through desktop app, and you are good to go.
 
 Any setting required is included in the folder `.vscode`, but the `Gson` library need to be downloaded manually.
 
-**If you are using other IDE**
+* **If you are using other IDE**
 
 After `git clone` the project, you need to do extra work to set up the environment for development. Details please refer to related documentations.
 
