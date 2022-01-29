@@ -1,31 +1,28 @@
 import java.text.DecimalFormat;
-// import java.text.DecimalFormatSymbols;
 import java.util.*;
 import java.io.IOException;
 import java.io.File;
+import com.google.gson.reflect.TypeToken;
 
 public class OptionMenu {
 	Scanner menuInput = new Scanner(System.in);
 	DecimalFormat moneyFormat = new DecimalFormat("'$'###,##0.00");
-    
-    // use database to store user info instead of a hashmap//
-	HashMap<Integer, Integer> data = new HashMap<Integer, Integer>();
+
 	// read customer datapool
 	String profilePath = "./profile.txt";
 	String accountPath = "./account.txt";
-	ReadWriteToFile<Profile> profileData = new ReadWriteToFile<>(profilePath);
-	ReadWriteToFile<Account> accountData = new ReadWriteToFile<>(accountPath);
+	ReadWriteToFile<Profile> profileData = new ReadWriteToFile<>(profilePath, new TypeToken<DataPool<Profile>>() { });
+	ReadWriteToFile<Account> accountData = new ReadWriteToFile<>(accountPath, new TypeToken<DataPool<Account>>() { });
 	DataPool<Profile> profilePool;
 	DataPool<Account> accountPool;
 	Account account;
 	Profile profile;
 
 	public void initDataPool() {
-		// need to check if file exists
+		// check if file exists
 		File profileFile = new File(profilePath);
 		File accountFile = new File(accountPath);
-		// profilePool = new DataPool<Profile>();
-		// accountPool = new DataPool<Account>();
+		
 		try {
 			if (!profileFile.createNewFile()) {
 				profilePool = profileData.read();
@@ -38,7 +35,6 @@ public class OptionMenu {
 			}
 			if (accountPool == null) {
 				accountPool = new DataPool<Account>();
-				System.out.println("acct pool created");
 			}
 
 		} catch (IOException e) {
@@ -49,13 +45,13 @@ public class OptionMenu {
 	}
 
 	public void home() {
-		initDataPool();
 		System.out.println("Welcome to the ABC BANK!");
 		System.out.println("1. Log in");
 		System.out.println("2. Create account");
 		System.out.println("Please type your option below:");
 
 		int selection = menuInput.nextInt();
+		menuInput.nextLine();
 
 		switch (selection) {
 			case 1:
@@ -85,19 +81,17 @@ public class OptionMenu {
 
 	public void getLogin() throws IOException {
 		boolean reAsk = false;
-		int inputNumber = 0;
-		int inputPin = 0;
+		String inputNumber = "";
+		String inputPin = "";
 		do {
 			try {
-            //     // data.put(952141, 191904);
-			// 	// data.put(989947, 71976);
 				reAsk = false;
 				System.out.println("Enter your customer Number");
-				inputNumber = menuInput.nextInt();
+				inputNumber = menuInput.nextLine();
 				
 
 				System.out.print("Enter your PIN Number: ");
-				inputPin = menuInput.nextInt();
+				inputPin = menuInput.nextLine();
 
 				
 			
@@ -107,12 +101,8 @@ public class OptionMenu {
 				reAsk = true;
 			}
 		} while (reAsk);
-			/*
-			 * for(Map.Entry<Integer,Integer> it : data.entrySet()){
-			 * if(it.getkey()==getCustomerNumber() && it.getValue()==getPinNumber){
-			 * getAccountType(); } }
-			 */
-		// check if account pool is null
+
+		// if account pool is null, the data file is empty
 		if (accountPool == null){
 			System.out.println("Please create an account");
 			home();
@@ -120,23 +110,20 @@ public class OptionMenu {
 		else{
 			System.out.println("account pool is assigned");
 		
-		
-			
 			if (accountPool.check(inputNumber)) {
-				// int cn = account.getCustomerNumber();
-				// int pn = account.getPinNumber();
-				if (accountPool.get(inputNumber).getPinNumber() == inputPin){
+				if (accountPool.get(inputNumber).getPinNumber().equals(inputPin)){
 					account = accountPool.get(inputNumber);
+					profile = profilePool.get(inputNumber);
 					getMenu();
 				}
 				else{
 					System.out.println("\n" + "Wrong Pin Number" + "\n");
-					getLogin();
+					home();
 				}
 				
 			} else {	
 				System.out.println("\n" + "Wrong Customer Number or Please create an account" + "\n");
-				getLogin();
+				home();
 			}
 		}
 	}
@@ -144,26 +131,25 @@ public class OptionMenu {
 	public void createAccount() {
 		account = new Account();
 		System.out.println("Enter your customer Number");
-		account.setCustomerNumber(menuInput.nextInt());
+		account.setCustomerNumber(menuInput.nextLine());
 
 		System.out.print("Enter your PIN Number: ");
-		account.setPinNumber(menuInput.nextInt());
-		menuInput.nextLine();
+		account.setPinNumber(menuInput.nextLine());
 
 		System.out.print("Enter your Name: ");
 		account.setCustomerName(menuInput.nextLine());
 		
 		profile = new Profile();
 		System.out.print("\n" + "Enter your Phone Number: ");
-		profile.editPhoneNumber(menuInput.nextLine());
+		profile.setPhoneNumber(menuInput.nextLine());
 
 		System.out.print("Enter your Address: ");
-		profile.editAddress(menuInput.nextLine());
+		profile.setAddress(menuInput.nextLine());
 
 		System.out.print("Enter your Email: ");
-		profile.editEmailAddress(menuInput.nextLine());
+		profile.setEmailAddress(menuInput.nextLine());
 
-		// store to the data pool
+		// store data to the data pool
 		accountPool.put(account.getCustomerNumber(), account);
 		profilePool.put(account.getCustomerNumber(), profile);
 		System.out.println("Account created successfully. You can start to use our services.");
@@ -202,15 +188,16 @@ public class OptionMenu {
 		System.out.println(" Type 1 - Deposit");
 		System.out.println(" Type 2 - Withdraw");
 		System.out.println(" Type 3 - Transfer");
-		System.out.println(" Type 4 - Exit");
+		System.out.println(" Type 4 - Back");
+		System.out.println(" Type 5 - Exit");
 		System.out.print("Choice: ");
 
 		int selection = menuInput.nextInt();
+		menuInput.nextLine();
 
 		switch (selection) {
 			case 1:
 				getDeposit();
-				// System.out.println("Checking Account Balance: " + moneyFormat.format(getCheckingBalance()));
 				getMenu();
 				break;
 
@@ -225,6 +212,10 @@ public class OptionMenu {
 				break;
 
 			case 4:
+				getProfile();
+				break;
+
+			case 5:
 				exitApp();
 				System.out.println("Thank You for using this ATM, bye.");
 				break;
@@ -239,12 +230,11 @@ public class OptionMenu {
 		System.out.println("Account Balance: " + moneyFormat.format(account.getBalance()));
 		System.out.print("Amount you want to withdraw from Account: ");
 		double amount = menuInput.nextDouble();
-        while (!account.checkInput(amount)) {
+        if (!account.checkInput(amount)) {
             System.out.println("Input is valid, please type valid amount.");
-            System.out.print("Amount you want to withdraw from Account: ");
-            amount = menuInput.nextDouble();
-        }
-		account.withdraw(amount);
+			getWithdraw();
+		}
+        
 		if (account.checkWithdraw(amount)) {
             account.withdraw(amount);
             System.out.println("Withdraw succeeded.");
@@ -283,11 +273,12 @@ public class OptionMenu {
 			System.out.println("Not enough balance.");
         }
         else {
+			menuInput.nextLine();
 			System.out.print("Account number you want to transfer to: ");
-			int toNumber = menuInput.nextInt();
-			// There should be a verification of the account number, but the info might be retrieved from the database
-			// do the deposit to the account
-			if (accountPool.check(toNumber) && toNumber != account.getCustomerNumber()) {
+			String toNumber = menuInput.nextLine();
+
+			// Verify the targeted account number, and the number must not be the same as the sender's
+			if (accountPool.check(toNumber) && !toNumber.equals(account.getCustomerNumber())) {
 				Account toAccount = accountPool.get(toNumber);
 				account.withdraw(amount);
 				toAccount.deposit(amount);
@@ -321,7 +312,7 @@ public class OptionMenu {
             break;
 
         case 3:
-            getProfileOption();
+            getEditProfile();
             getMenu();
             break;
 
@@ -336,7 +327,7 @@ public class OptionMenu {
         }
     }
 
-	public void getProfileOption() {
+	public void getEditProfile() {
         System.out.println("Edit Profile: ");
         System.out.println(" Type 1 - Phone Number");
         System.out.println(" Type 2 - Address");
@@ -346,14 +337,18 @@ public class OptionMenu {
         System.out.print("Choice: ");
 
         int selection = menuInput.nextInt();
-		menuInput.nextLine();
+
+		// avoid failing to wait for the input after calling Scanner.nextInt()
+		menuInput.nextLine(); 
 
         switch (selection) {
         case 1:
 		    System.out.println("Current phone number: " + profile.getPhoneNumber());
 			System.out.print("New phone number:");
 			String number = menuInput.nextLine();
-			profile.editPhoneNumber(number);
+			profile.setPhoneNumber(number);
+			System.out.println("Phone number is modified.");
+        	System.out.println("Current phone number: " + profile.getPhoneNumber());
             getMenu();
             break;
 
@@ -361,7 +356,9 @@ public class OptionMenu {
 			System.out.println("Current address: " + profile.getAddress());
 			System.out.print("New address:");
 			String address = menuInput.nextLine();
-			profile.editAddress(address);
+			profile.setAddress(address);
+			System.out.println("Address is modified.");
+        	System.out.println("Current address: " + profile.getAddress());
             getMenu();
             break;
 
@@ -369,7 +366,9 @@ public class OptionMenu {
 			System.out.println("Current email address: " + profile.getEmailAddress());
 			System.out.print("New email address:");
 			String emailAddress = menuInput.nextLine();
-			profile.editEmailAddress(emailAddress);
+			profile.setEmailAddress(emailAddress);
+			System.out.println("Email is modified.");
+        	System.out.println("Current email address: " + profile.getEmailAddress());
 			getMenu();
             break;
 
@@ -384,7 +383,7 @@ public class OptionMenu {
 
         default:
             System.out.println("\n" + "Invalid Choice." + "\n");
-            getProfileOption();
+            getEditProfile();
         }
     }
 

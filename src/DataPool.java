@@ -2,21 +2,21 @@ import java.util.HashMap;
 
 public class DataPool<T> {
 
-    private HashMap<Integer, T> pool = new HashMap<>();
+    private HashMap<String, T> pool = new HashMap<>();
 
-    public void put(int customerNumber, T data) {
+    public void put(String customerNumber, T data) {
         pool.put(customerNumber, data);
     }
 
-    public void remove(int customerNumber) {
+    public void remove(String customerNumber) {
         pool.remove(customerNumber); 
     }
 
-    public T get(int customerNumber) {
+    public T get(String customerNumber) {
         return pool.get(customerNumber);
     }
 
-    public boolean check(int customerNumber) {
+    public boolean check(String customerNumber) {
         if (pool.isEmpty()) {
             return false;
         }
